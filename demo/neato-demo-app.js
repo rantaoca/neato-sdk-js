@@ -142,7 +142,10 @@ var NeatoDemoApp = {
       if(data.length > 0) {
         var persistentMapUrl = data[0]["url"];
         self.showMapForUrl(persistentMapUrl);
-      } else {
+        var persistentMapId = data[0]["id"];
+        var boundaries = self.user.getRobotBySerial(serial).getMapBoundaries(persistentMapId);
+        self.showBoundaries(boundaries);
+        } else {
         alert("No maps available yet. Complete at least one house cleaning to view maps.")
       }
     }).fail(function (data) {
@@ -164,6 +167,10 @@ var NeatoDemoApp = {
       mapEditor.style.height = image.height + "px";
     }
     image.src = mapUrl;
+  },
+  
+  showBoundaries: function (boundaries) {
+    console.log(boundaries);
   },
 
   checkAuthenticationStatus: function () {
