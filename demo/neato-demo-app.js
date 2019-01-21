@@ -143,8 +143,8 @@ var NeatoDemoApp = {
         var persistentMapUrl = data[0]["url"];
         self.showMapForUrl(persistentMapUrl);
         var persistentMapId = data[0]["id"];
-        var boundaries = self.user.getRobotBySerial(serial).getMapBoundaries(persistentMapId);
-        self.showBoundaries(boundaries);
+        var boundarySource = self.user.getRobotBySerial(serial).getMapBoundaries(persistentMapId);
+        self.showBoundaries(boundarySource);
         } else {
         alert("No maps available yet. Complete at least one house cleaning to view maps.")
       }
@@ -169,8 +169,20 @@ var NeatoDemoApp = {
     image.src = mapUrl;
   },
   
-  showBoundaries: function (boundaries) {
-    console.log(boundaries);
+  showBoundaries: function (boundarySource) {
+    boundarySource.done(function(returnStatus, data) {
+      if (returnStatus != "ok") {
+        alert("Couldn't get boundaries.");
+        return;
+      }
+      var boundaries = data["boundaries"];
+      });
+      for (var i = 0; i < boundaries.length; i++) {
+        var startx = boundaries[i]["vertices"][0][0];
+        var starty = boundaries[i]["vertices"][0][1];
+        var endx = boundaries[i]["vertices"][1][0];
+        var endy = boundaries[i]["vertices"][1][1];
+        console.log("boundary" + i + ": (" + startx + ", " + starty + ") to (" + endx + ", " + endy + ")")
   },
 
   checkAuthenticationStatus: function () {
