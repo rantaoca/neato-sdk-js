@@ -156,7 +156,7 @@ var NeatoDemoApp = {
     
     // Create an image and wait until it loads before assigning as a background image, so that
     // we know the width and height.
-    var image = Image();
+    var image = new Image();
     image.onload = function() {
       mapEditor.style.backgroundImage = "url('" + mapUrl + "') ";
       mapEditor.style.backgroundRepeat = "no-repeat";
