@@ -160,8 +160,8 @@ var NeatoDemoApp = {
     image.onload = function() {
       mapEditor.style.backgroundImage = "url('" + mapUrl + "') ";
       mapEditor.style.backgroundRepeat = "no-repeat";
-      mapEditor.style.width = image.width;
-      mapEditor.style.height = image.height;
+      mapEditor.style.width = image.width + "px";
+      mapEditor.style.height = image.height + "px";
     }
     image.src = mapUrl;
   },
