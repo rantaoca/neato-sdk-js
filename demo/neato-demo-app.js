@@ -135,6 +135,29 @@ var NeatoDemoApp = {
       6: { mode: 1, startTime: "15:00" }
     });
   },
+  
+  showMap: function(serial) {
+    var self = this;
+    self.user.getRobotBySerial(serial).maps().done(function (data) {
+      if(data["maps"] && data["maps"].length > 0) {
+        var mapUrl = data["maps"][0]["url"];
+        self.showMapForUrl(mapUrl);
+      } else {
+        alert("No maps available yet. Complete at least one house cleaning to view maps.")
+      }
+    }).fail(function (data) {
+      self.showErrorMessage("something went wrong getting robots map....");
+    });
+  },
+  
+  // Show a given map image in the map editor.
+  showMapForUrl: function(mapUrl) {
+    var mapEditor = document.getElementById("map-editor");
+    mapEditor.style.backgroundImage = "url('" + mapUrl + "') ";
+    mapEditor.style.backgroundRepeat = "no-repeat";
+    mapEditor.style.width = "768px";
+    mapEditor.style.height = "768px";
+  },
 
   checkAuthenticationStatus: function () {
     var self = this;
