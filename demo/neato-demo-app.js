@@ -136,12 +136,12 @@ var NeatoDemoApp = {
     });
   },
   
-  showMap: function(serial) {
+  showPersistentMap: function(serial) {
     var self = this;
-    self.user.getRobotBySerial(serial).maps().done(function (data) {
-      if(data["maps"] && data["maps"].length > 0) {
-        var mapUrl = data["maps"][0]["url"];
-        self.showMapForUrl(mapUrl);
+    self.user.getRobotBySerial(serial).persistentMaps().done(function (data) {
+      if(data.length > 0) {
+        var persistentMapUrl = data[0]["url"];
+        self.showMapForUrl(persistentMapUrl);
       } else {
         alert("No maps available yet. Complete at least one house cleaning to view maps.")
       }
@@ -153,10 +153,17 @@ var NeatoDemoApp = {
   // Show a given map image in the map editor.
   showMapForUrl: function(mapUrl) {
     var mapEditor = document.getElementById("map-editor");
-    mapEditor.style.backgroundImage = "url('" + mapUrl + "') ";
-    mapEditor.style.backgroundRepeat = "no-repeat";
-    mapEditor.style.width = "768px";
-    mapEditor.style.height = "768px";
+    
+    // Create an image and wait until it loads before assigning as a background image, so that
+    // we know the width and height.
+    var image = Image();
+    image.onload = function() {
+      mapEditor.style.backgroundImage = "url('" + mapUrl + "') ";
+      mapEditor.style.backgroundRepeat = "no-repeat";
+      mapEditor.style.width = image.width;
+      mapEditor.style.height = image.height;
+    }
+    image.src = mapUrl;
   },
 
   checkAuthenticationStatus: function () {
@@ -215,7 +222,7 @@ var NeatoDemoApp = {
       self.findMe($(this).parents().attr('data-serial'));
     });
     $(document).on("click", ".cmd_maps", function () {
-      self.maps($(this).parents().attr('data-serial'));
+      self.showPersistentMap($(this).parents().attr('data-serial'));
     });
     $(document).on("click", ".cmd_schedule_monday", function () {
       self.setScheduleEveryMonday($(this).parents().parents().attr('data-serial'));
