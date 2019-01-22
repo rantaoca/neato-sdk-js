@@ -182,9 +182,20 @@ var NeatoDemoApp = {
         var starty = boundaries[i]["vertices"][0][1];
         var endx = boundaries[i]["vertices"][1][0];
         var endy = boundaries[i]["vertices"][1][1];
-        console.log("boundary" + i + ": (" + startx + ", " + starty + ") to (" + endx + ", " + endy + ")")
+        console.log("boundary" + i + ": (" + startx + ", " + starty + ") to (" + endx + ", " + endy + ")");
+        this.drawBoundary(startx, starty, endx, endy);
+      }
   },
 
+  drawBoundary: function (startx, starty, endx, endy) {
+    var c = document.getElementById("map-editor");
+    var ctx = c.getContext("2d");
+    ctx.beginPath();
+    ctx.moveTo(startx*c.width, starty*c.height);
+    ctx.lineTo(endx*c.width, endy*c.height);
+    ctx.stroke();
+  },
+    
   checkAuthenticationStatus: function () {
     var self = this;
     this.user = new Neato.User();
