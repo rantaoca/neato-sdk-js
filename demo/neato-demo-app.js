@@ -170,6 +170,7 @@ var NeatoDemoApp = {
   },
   
   showBoundaries: function (boundarySource) {
+    var self = this;
     boundarySource.done(function(returnStatus, data) {
       if (returnStatus != "ok") {
         alert("Couldn't get boundaries.");
@@ -182,7 +183,7 @@ var NeatoDemoApp = {
         var endx = boundaries[i]["vertices"][1][0];
         var endy = boundaries[i]["vertices"][1][1];
         console.log("boundary" + i + ": (" + startx + ", " + starty + ") to (" + endx + ", " + endy + ")");
-        this.drawBoundary(startx, starty, endx, endy);
+        self.drawBoundary(startx, starty, endx, endy);
       }
     });
   },
