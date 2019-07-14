@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/NeatoRobotics/neato-sdk-js.svg?branch=master)](https://travis-ci.org/NeatoRobotics/neato-sdk-js)
-
+[GithubIO demo](https://rantaoca.github.io/neato-sdk-js/demo/index.html)
 # Neato SDK - JS
 
 This is the [Neato Developer Network's](http://developers.neatorobotics.com) official JavaScript SDK (Beta release).
