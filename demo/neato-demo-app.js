@@ -204,6 +204,26 @@ var NeatoDemoApp = {
     self.user.getRobotBySerial(serial).persistentMaps().done(mapDataCallback);
   },
 
+  setExampleBoundaries: function(serial) {
+    var boundaries = [{"vertices":[[0.3226,0.2242],[0.3235,0.2601]]},{"vertices":[[0.3889,0.2615],[0.3235,0.2601]]}];
+    this.setMapBoundaries(serial, boundaries);
+  }
+
+  setMapBoundaries: function(serial, boundaries) {
+    function mapDataCallback(data) {
+      // Get the first map if it exists, then call boundaryDataCallback to get the boundary.
+      if (data.length > 0) {
+        var persistentMapId = data[0]["id"];
+        self.user.getRobotBySerial(serial).setMapBoundaries({
+          mapId: persistentMapId,
+          boundaries: boundaries
+        });
+      } else {
+        alert("No maps available yet. Complete at least one house cleaning to view maps.")
+      }
+    }
+  }
+
   showBoundaries: function (boundarySource) {
     var self = this;
     boundarySource.done(function(returnStatus, data) {
@@ -294,6 +314,9 @@ var NeatoDemoApp = {
     $(document).on("click", ".cmd_console_log_boundaries", function () {
       self.consoleLogBoundaries($(this).parents().parents().attr('data-serial'));
     });
+    $(document).on("click", ".cmd_set_example_boundaries", function () {
+      self.setExampleBoundaries($(this).parents().parents().attr('data-serial'));
+    });
     $(document).on("click", ".cmd_schedule_monday", function () {
       self.setScheduleEveryMonday($(this).parents().parents().attr('data-serial'));
     });
@@ -360,6 +383,7 @@ var NeatoDemoApp = {
         "<div class='other-commands'>" +
           "<p>Custom Commands:</p>" +
           "<a class='btn cmd_console_log_boundaries'>Console log boundaries</a>" +
+          "<a class='btn cmd_set_example_boundaries'>Set example boundaries</a>" +
           "<p>WIPE ALL EXISTING SCHEDULE AND SET IT TO:</p>" +
           "<a class='btn cmd_schedule_every_day'>Everyday at 3:00 pm</a>" +
           "<a class='btn cmd_schedule_monday'>Monday at 3:00 pm</a>" +
