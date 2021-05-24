@@ -169,13 +169,13 @@ var NeatoDemoApp = {
     image.src = mapUrl;
   },
 
-  consoleLogBoundaries: function(serial) {
+  printJsonBoundaries: function(serial) {
     function logBoundaries(rawBoundaries) {
       boundaries = [];
       for (var i = 0; i < rawBoundaries.length; i++) {
         boundaries.push({vertices: rawBoundaries[i].vertices});
       }
-      console.log(JSON.stringify(boundaries));
+      $("#json_data").val(JSON.stringify(boundaries));
     }
     this.getMapBoundaries(serial, logBoundaries);
   },
@@ -227,6 +227,15 @@ var NeatoDemoApp = {
         }, 5000);
       }, 1000);
     });
+  },
+
+  setCustomBoundaries: function(serial) {
+    try {
+      var boundaries = JSON.parse(prompt());
+      this.setMapBoundaries(serial, boundaries);
+    } catch {
+      alert("Not a valid json string")
+    }
   },
 
   setKitchenBoundaries: function(serial) {
@@ -342,8 +351,8 @@ var NeatoDemoApp = {
     $(document).on("click", ".cmd_maps", function () {
       self.showPersistentMap($(this).parents().attr('data-serial'));
     });
-    $(document).on("click", ".cmd_console_log_boundaries", function () {
-      self.consoleLogBoundaries($(this).parents().parents().attr('data-serial'));
+    $(document).on("click", ".cmd_print_json_boundaries", function () {
+      self.printJsonBoundaries($(this).parents().parents().attr('data-serial'));
     });
     $(document).on("click", ".cmd_set_kitchen_boundaries", function () {
       self.setKitchenBoundaries($(this).parents().parents().attr('data-serial'));
@@ -419,12 +428,10 @@ var NeatoDemoApp = {
         "</div>" +
         "<div class='other-commands'>" +
           "<p>Custom Commands:</p>" +
-          "<a class='btn cmd_console_log_boundaries'>Console log boundaries</a>" +
+          "<a class='btn cmd_print_json_boundaries'>Show boundaries</a>" +
+          "<a class='btn cmd_set_custom_boundaries'>Set custom boundaries</a>" +
           "<a class='btn cmd_set_kitchen_boundaries'>Set kitchen boundaries</a>" +
           "<a class='btn cmd_set_default_boundaries'>Set default boundaries</a>" +
-          "<p>WIPE ALL EXISTING SCHEDULE AND SET IT TO:</p>" +
-          "<a class='btn cmd_schedule_every_day'>Everyday at 3:00 pm</a>" +
-          "<a class='btn cmd_schedule_monday'>Monday at 3:00 pm</a>" +
         "</div>" +
       "</div>";
   },
