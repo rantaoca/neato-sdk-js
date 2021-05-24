@@ -219,6 +219,7 @@ var NeatoDemoApp = {
       self.setMapBoundaries(serial, boundaries);
       // Start cleaning
       // TODO do this properly without nested timeouts.
+      // TODO This doesn't work with the current API, need to use the basic4 version.
       setTimeout(function() {
         self.startHouseCleaning(serial);
         setTimeout(function() {
@@ -228,11 +229,14 @@ var NeatoDemoApp = {
     });
   },
 
-  setExampleBoundaries: function(serial) {
+  setKitchenBoundaries: function(serial) {
+    var boundaries = [{"vertices":[[0.3226,0.2241],[0.3235,0.2601]]},{"vertices":[[0.3889,0.2615],[0.3235,0.2601]]},{"vertices":[[0.5285,0.3515],[0.4554,0.394]]},{"vertices":[[0.4206,0.4436],[0.6129,0.3996]]},{"vertices":[[0.6129,0.3996],[0.6122,0.3618]]},{"vertices":[[0.3761,0.5159],[0.2586,0.5245]]}];
+    this.setMapBoundaries(serial, boundaries);
+  },
+
+  setDefaultBoundaries: function(serial) {
     var boundaries = [{"vertices":[[0.3226,0.2242],[0.3235,0.2601]]},{"vertices":[[0.3889,0.2615],[0.3235,0.2601]]}];
-    try {
-      boundaries = JSON.parse(prompt());
-    } catch {}
+
     this.setMapBoundaries(serial, boundaries);
   },
 
@@ -341,8 +345,11 @@ var NeatoDemoApp = {
     $(document).on("click", ".cmd_console_log_boundaries", function () {
       self.consoleLogBoundaries($(this).parents().parents().attr('data-serial'));
     });
-    $(document).on("click", ".cmd_set_example_boundaries", function () {
-      self.setExampleBoundaries($(this).parents().parents().attr('data-serial'));
+    $(document).on("click", ".cmd_set_kitchen_boundaries", function () {
+      self.setKitchenBoundaries($(this).parents().parents().attr('data-serial'));
+    });
+    $(document).on("click", ".cmd_set_default_boundaries", function () {
+      self.setDefaultBoundaries($(this).parents().parents().attr('data-serial'));
     });
     $(document).on("click", ".cmd_clean_kitchen", function () {
       self.cleanKitchen($(this).parents().parents().attr('data-serial'));
@@ -413,8 +420,8 @@ var NeatoDemoApp = {
         "<div class='other-commands'>" +
           "<p>Custom Commands:</p>" +
           "<a class='btn cmd_console_log_boundaries'>Console log boundaries</a>" +
-          "<a class='btn cmd_set_example_boundaries'>Set example boundaries</a>" +
-          "<a class='btn cmd_clean_kitchen'>Clean kitchen</a>" +
+          "<a class='btn cmd_set_kitchen_boundaries'>Set kitchen boundaries</a>" +
+          "<a class='btn cmd_set_default_boundaries'>Set default boundaries</a>" +
           "<p>WIPE ALL EXISTING SCHEDULE AND SET IT TO:</p>" +
           "<a class='btn cmd_schedule_every_day'>Everyday at 3:00 pm</a>" +
           "<a class='btn cmd_schedule_monday'>Monday at 3:00 pm</a>" +
