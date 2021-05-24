@@ -177,7 +177,7 @@ var NeatoDemoApp = {
       }
       console.log(JSON.stringify(boundaries));
     }
-    getMapBoundaries(serial, logBoundaries);
+    this.getMapBoundaries(serial, logBoundaries);
   },
 
   getMapBoundaries: function(serial, callback) {
