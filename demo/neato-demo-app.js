@@ -231,7 +231,7 @@ var NeatoDemoApp = {
 
   setCustomBoundaries: function(serial) {
     try {
-      var boundaries = JSON.parse(prompt());
+      var boundaries = JSON.parse($("#json_data").val());
       this.setMapBoundaries(serial, boundaries);
     } catch {
       alert("Not a valid json string")
