@@ -1,7 +1,3 @@
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 var NeatoDemoApp = {
   clientId: null,
   scopes: null,
@@ -221,11 +217,14 @@ var NeatoDemoApp = {
       // Get the oldBoundaries, and then set the current boundaries
       this.setMapBoundaries(serial, boundaries);
       // Start cleaning
-      // TODO do this properly without sleeping.
-      await sleep(1000);
-      this.startHouseCleaning(serial);
-      await sleep(5000);
-      this.setMapBoundaries(serial, oldBoundaries);
+      // TODO do this properly without nested timeouts.
+      setTimeout(function() {
+
+        this.startHouseCleaning(serial);
+        setTimeout(function() {
+          this.setMapBoundaries(serial, oldBoundaries);
+        }, 5000);
+      },1000);
     });
   },
 
