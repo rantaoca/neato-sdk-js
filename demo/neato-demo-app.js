@@ -354,6 +354,9 @@ var NeatoDemoApp = {
     $(document).on("click", ".cmd_print_json_boundaries", function () {
       self.printJsonBoundaries($(this).parents().parents().attr('data-serial'));
     });
+    $(document).on("click", ".cmd_set_custom_boundaries", function () {
+      self.setCustomBoundaries($(this).parents().parents().attr('data-serial'));
+    });
     $(document).on("click", ".cmd_set_kitchen_boundaries", function () {
       self.setKitchenBoundaries($(this).parents().parents().attr('data-serial'));
     });
