@@ -219,12 +219,11 @@ var NeatoDemoApp = {
       // Start cleaning
       // TODO do this properly without nested timeouts.
       setTimeout(function() {
-
         this.startHouseCleaning(serial);
         setTimeout(function() {
           this.setMapBoundaries(serial, oldBoundaries);
         }, 5000);
-      },1000);
+      }, 1000);
     });
   },
 
@@ -246,9 +245,9 @@ var NeatoDemoApp = {
           boundaries: boundaries
         });
       } else {
-        alert("No maps available yet. Complete at least one house cleaning to view maps.")
+        alert("No maps available yet. Complete at least one house cleaning to view maps.");
       }
-    }
+    });
   },
 
   showBoundaries: function (boundarySource) {
