@@ -213,15 +213,16 @@ var NeatoDemoApp = {
   },
 
   cleanZone: function(serial, boundaries) {
+    var self = this;
     this.getMapBoundaries(serial, function (oldBoundaries) {
       // Get the oldBoundaries, and then set the current boundaries
-      this.setMapBoundaries(serial, boundaries);
+      self.setMapBoundaries(serial, boundaries);
       // Start cleaning
       // TODO do this properly without nested timeouts.
       setTimeout(function() {
-        this.startHouseCleaning(serial);
+        self.startHouseCleaning(serial);
         setTimeout(function() {
-          this.setMapBoundaries(serial, oldBoundaries);
+          self.setMapBoundaries(serial, oldBoundaries);
         }, 5000);
       }, 1000);
     });
@@ -236,6 +237,7 @@ var NeatoDemoApp = {
   },
 
   setMapBoundaries: function(serial, boundaries) {
+    var self = this;
     self.user.getRobotBySerial(serial).persistentMaps().done(function (data) {
       // Get the first map if it exists, then call boundaryDataCallback to get the boundary.
       if (data.length > 0) {
