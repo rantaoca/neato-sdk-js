@@ -207,7 +207,7 @@ var NeatoDemoApp = {
   setExampleBoundaries: function(serial) {
     var boundaries = [{"vertices":[[0.3226,0.2242],[0.3235,0.2601]]},{"vertices":[[0.3889,0.2615],[0.3235,0.2601]]}];
     this.setMapBoundaries(serial, boundaries);
-  }
+  },
 
   setMapBoundaries: function(serial, boundaries) {
     function mapDataCallback(data) {
@@ -222,7 +222,7 @@ var NeatoDemoApp = {
         alert("No maps available yet. Complete at least one house cleaning to view maps.")
       }
     }
-  }
+  },
 
   showBoundaries: function (boundarySource) {
     var self = this;
