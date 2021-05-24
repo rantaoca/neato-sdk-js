@@ -208,7 +208,7 @@ var NeatoDemoApp = {
     var boundaries = [{"vertices":[[0.3226,0.2241],[0.3235,0.2601]]},{"vertices":[[0.3889,0.2615],[0.3235,0.2601]]},{"vertices":[[0.5285,0.3515],[0.4554,0.394]]},{"vertices":[[0.4206,0.4436],[0.6129,0.3996]]},{"vertices":[[0.6129,0.3996],[0.6122,0.3618]]},{"vertices":[[0.3761,0.5159],[0.2586,0.5245]]}];
     try {
       boundaries = JSON.parse(prompt());
-    }
+    } catch {}
     this.cleanZone(serial, boundaries)
   },
 
@@ -229,7 +229,7 @@ var NeatoDemoApp = {
     var boundaries = [{"vertices":[[0.3226,0.2242],[0.3235,0.2601]]},{"vertices":[[0.3889,0.2615],[0.3235,0.2601]]}];
     try {
       boundaries = JSON.parse(prompt());
-    }
+    } catch {}
     this.setMapBoundaries(serial, boundaries);
   },
 
