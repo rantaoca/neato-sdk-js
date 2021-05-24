@@ -135,11 +135,11 @@ var NeatoDemoApp = {
       6: { mode: 1, startTime: "15:00" }
     });
   },
-  
+
   showPersistentMap: function(serial) {
     var self = this;
     self.user.getRobotBySerial(serial).persistentMaps().done(function (data) {
-      if(data.length > 0) {
+      if (data.length > 0) {
         var persistentMapUrl = data[0]["url"];
         self.showMapForUrl(persistentMapUrl);
         var persistentMapId = data[0]["id"];
@@ -152,11 +152,11 @@ var NeatoDemoApp = {
       self.showErrorMessage("something went wrong getting robots map....");
     });
   },
-  
+
   // Show a given map image in the map editor.
   showMapForUrl: function(mapUrl) {
     var mapEditor = document.getElementById("map-editor");
-    
+
     // Create an image and wait until it loads before assigning as a background image, so that
     // we know the width and height.
     var image = new Image();
@@ -168,7 +168,42 @@ var NeatoDemoApp = {
     }
     image.src = mapUrl;
   },
-  
+
+  consoleLogBoundaries: function(serial) {
+    function logBoundaries(rawBoundaries) {
+      boundaries = [];
+      for (var i = 0; i < rawBoundaries.length; i++) {
+        boundaries.push({vertices: rawBoundaries[i].vertices});
+      }
+      console.log(JSON.stringify(boundaries));
+    }
+    getMapBoundaries(serial, logBoundaries);
+  },
+
+  getMapBoundaries: function(serial, callback) {
+    // Get the boundaries of the latest map, and returns it as a parameter of the callback.
+    var self = this;
+    function boundaryDataCallback(returnStatus, data) {
+      // Parse the returned boundary object for just the vertices.
+      if (returnStatus != "ok") {
+        alert("Couldn't get boundaries.");
+        return;
+      }
+      callback(data["boundaries"]);
+    }
+    function mapDataCallback(data) {
+      // Get the first map if it exists, then call boundaryDataCallback to get the boundary.
+      if (data.length > 0) {
+        var persistentMapId = data[0]["id"];
+        var boundarySource = self.user.getRobotBySerial(serial).getMapBoundaries(persistentMapId);
+        boundarySource.done(boundaryDataCallback);
+      } else {
+        alert("No maps available yet. Complete at least one house cleaning to view maps.")
+      }
+    }
+    self.user.getRobotBySerial(serial).persistentMaps().done(mapDataCallback);
+  },
+
   showBoundaries: function (boundarySource) {
     var self = this;
     boundarySource.done(function(returnStatus, data) {
@@ -185,6 +220,7 @@ var NeatoDemoApp = {
         console.log("boundary" + i + ": (" + startx + ", " + starty + ") to (" + endx + ", " + endy + ")");
         self.drawBoundary(startx, starty, endx, endy);
       }
+
     });
   },
 
@@ -196,7 +232,7 @@ var NeatoDemoApp = {
     ctx.lineTo(endx*c.width, endy*c.height);
     ctx.stroke();
   },
-    
+
   checkAuthenticationStatus: function () {
     var self = this;
     this.user = new Neato.User();
@@ -254,6 +290,9 @@ var NeatoDemoApp = {
     });
     $(document).on("click", ".cmd_maps", function () {
       self.showPersistentMap($(this).parents().attr('data-serial'));
+    });
+    $(document).on("click", ".cmd_console_log_boundaries", function () {
+      self.consoleLogBoundaries($(this).parents().parents().attr('data-serial'));
     });
     $(document).on("click", ".cmd_schedule_monday", function () {
       self.setScheduleEveryMonday($(this).parents().parents().attr('data-serial'));
@@ -319,6 +358,8 @@ var NeatoDemoApp = {
           "<a class='cmd_send_to_base disabled'><i class='fa fa-home' aria-hidden='true'></i></a>" +
         "</div>" +
         "<div class='other-commands'>" +
+          "<p>Custom Commands:</p>" +
+          "<a class='btn cmd_console_log_boundaries'>Console log boundaries</a>" +
           "<p>WIPE ALL EXISTING SCHEDULE AND SET IT TO:</p>" +
           "<a class='btn cmd_schedule_every_day'>Everyday at 3:00 pm</a>" +
           "<a class='btn cmd_schedule_monday'>Monday at 3:00 pm</a>" +
